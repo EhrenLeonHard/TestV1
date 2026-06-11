@@ -1,61 +1,231 @@
-<script>
-  const noBtn = document.getElementById("noBtn");
-  const yesBtn = document.getElementById("yesBtn");
-  const message = document.getElementById("message");
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Date?</title>
 
-  let yesSize = 1;
-  let noTries = 0;
-
-  const noTexts = [
-    "Nein",
-    "Sicher?",
-    "Wirklich?",
-    "Denk nochmal nach",
-    "Falscher Button",
-    "Du meinst Ja"
-  ];
-
-  function moveNoButton() {
-    const padding = 20;
-    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
-
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
-
-    noBtn.style.position = "fixed";
-    noBtn.style.left = randomX + "px";
-    noBtn.style.top = randomY + "px";
-
-    // Ja-Button wird größer
-    yesSize += 0.15;
-    yesBtn.style.transform = `scale(${yesSize})`;
-
-    // Nein-Button bekommt anderen Text
-    noTries++;
-    noBtn.textContent = noTexts[noTries % noTexts.length];
-
-    // Nach mehreren Versuchen wird es frecher
-    if (noTries === 5) {
-      message.textContent = "Nein wirkt technisch instabil.";
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-    if (noTries === 8) {
-      message.textContent = "System empfiehlt eindeutig: Ja.";
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffe0ec, #fff7fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
     }
-  }
 
-  noBtn.addEventListener("mouseover", moveNoButton);
-  noBtn.addEventListener("click", moveNoButton);
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      width: min(90vw, 430px);
+      position: relative;
+      z-index: 2;
+    }
 
-  noBtn.addEventListener("touchstart", function (event) {
-    event.preventDefault();
-    moveNoButton();
-  });
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2rem;
+    }
 
-  yesBtn.addEventListener("click", function () {
-    message.textContent = "Richtige Entscheidung :)";
-    yesBtn.textContent = "Sehr gut";
-    noBtn.style.display = "none";
-  });
-</script>
+    p {
+      margin: 0 0 30px;
+      color: #555;
+    }
+
+    .buttons {
+      height: 100px;
+      position: relative;
+    }
+
+    button {
+      border: none;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.25s ease, left 0.2s ease, top 0.2s ease;
+      white-space: nowrap;
+    }
+
+    #yesBtn {
+      background: #ff4f93;
+      color: white;
+      margin-right: 18px;
+      transform-origin: center;
+      position: relative;
+      z-index: 3;
+    }
+
+    #noBtn {
+      background: #eeeeee;
+      color: #333;
+      position: absolute;
+      left: 235px;
+      top: 0;
+      z-index: 4;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #ff4f93;
+      min-height: 24px;
+    }
+
+    .heart {
+      position: fixed;
+      top: -30px;
+      font-size: 24px;
+      animation: fall 4s linear forwards;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Willst du auf ein 2. Date?</h1>
+    <p>Wähle weise.</p>
+
+    <div class="buttons">
+      <button id="yesBtn">Ja</button>
+      <button id="noBtn">Nein</button>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const message = document.getElementById("message");
+
+    let yesSize = 1;
+    let noTries = 0;
+    let growthInterval;
+
+    const noTexts = [
+      "Nein",
+      "Sicher?",
+      "Wirklich?",
+      "Denk nochmal nach",
+      "Falscher Button",
+      "Du meinst Ja",
+      "Zu spät",
+      "Systemfehler"
+    ];
+
+    function updateYesButton() {
+      yesBtn.style.transform = `scale(${yesSize})`;
+    }
+
+    function growYesButton() {
+      yesSize += 0.04;
+      updateYesButton();
+
+      if (yesSize > 2.2) {
+        message.textContent = "Der Ja-Button gewinnt langsam an Argumenten.";
+      }
+
+      if (yesSize > 3.2) {
+        message.textContent = "Es wird eng für Nein.";
+      }
+
+      if (yesSize > 4.3) {
+        message.textContent = "Ja ist jetzt praktisch unvermeidbar.";
+      }
+    }
+
+    growthInterval = setInterval(growYesButton, 700);
+
+    function moveNoButton() {
+      const padding = 20;
+      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+      const randomX = Math.floor(Math.random() * Math.max(maxX, 1));
+      const randomY = Math.floor(Math.random() * Math.max(maxY, 1));
+
+      noBtn.style.position = "fixed";
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
+
+      yesSize += 0.18;
+      updateYesButton();
+
+      noTries++;
+      noBtn.textContent = noTexts[noTries % noTexts.length];
+
+      if (noTries === 3) {
+        message.textContent = "Nein wirkt technisch instabil.";
+      }
+
+      if (noTries === 6) {
+        message.textContent = "System empfiehlt eindeutig: Ja.";
+      }
+
+      if (noTries === 10) {
+        noBtn.style.display = "none";
+        message.textContent = "Nein wurde aus Qualitätsgründen entfernt.";
+      }
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "♥";
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 18 + "px";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 4000);
+    }
+
+    noBtn.addEventListener("mouseover", moveNoButton);
+
+    noBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      moveNoButton();
+    });
+
+    noBtn.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      moveNoButton();
+    });
+
+    yesBtn.addEventListener("click", function () {
+      clearInterval(growthInterval);
+
+      message.textContent = "Richtige Entscheidung :)";
+      yesBtn.textContent = "Sehr gut";
+      noBtn.style.display = "none";
+
+      yesBtn.style.transform = "scale(1.3)";
+
+      setInterval(createHeart, 180);
+    });
+  </script>
+</body>
+</html>
