@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Date?</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffe0ec, #fff7fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      width: min(90vw, 430px);
+      position: relative;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 0 0 30px;
+      color: #555;
+    }
+
+    .buttons {
+      height: 90px;
+      position: relative;
+    }
+
+    button {
+      border: none;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, left 0.2s ease, top 0.2s ease;
+    }
+
+    #yesBtn {
+      background: #ff4f93;
+      color: white;
+      margin-right: 18px;
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.08);
+    }
+
+    #noBtn {
+      background: #eeeeee;
+      color: #333;
+      position: absolute;
+      left: 235px;
+      top: 0;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #ff4f93;
+      min-height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Willst du auf ein 2. Date?</h1>
+    <p>Wähle weise.</p>
+
+    <div class="buttons">
+      <button id="yesBtn">Ja</button>
+      <button id="noBtn">Nein</button>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const message = document.getElementById("message");
+
+    function moveNoButton() {
+      const padding = 20;
+      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+
+      noBtn.style.position = "fixed";
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
+    }
+
+    noBtn.addEventListener("mouseover", moveNoButton);
+    noBtn.addEventListener("click", moveNoButton);
+    noBtn.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      moveNoButton();
+    });
+
+    yesBtn.addEventListener("click", function () {
+      message.textContent = "Richtige Entscheidung :)";
+      yesBtn.textContent = "Sehr gut";
+      noBtn.style.display = "none";
+    });
+  </script>
+</body>
+</html>
