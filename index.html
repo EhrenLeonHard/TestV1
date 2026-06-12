@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2. Date?</title>
+  <title>Amy, 2. Date?</title>
 
   <style>
     * {
@@ -30,6 +30,13 @@
       width: min(90vw, 430px);
       position: relative;
       z-index: 2;
+    }
+
+    .name {
+      font-size: 1rem;
+      color: #ff4f93;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
     h1 {
@@ -102,7 +109,8 @@
 
 <body>
   <div class="card">
-    <h1>Willst du auf ein 2. Date?</h1>
+    <div class="name">Für Amy</div>
+    <h1>Amy, willst du auf ein 2. Date?</h1>
     <p>Wähle weise.</p>
 
     <div class="buttons">
@@ -124,7 +132,7 @@
 
     const noTexts = [
       "Nein",
-      "Sicher?",
+      "Sicher, Amy?",
       "Wirklich?",
       "Denk nochmal nach",
       "Falscher Button",
@@ -146,7 +154,7 @@
       }
 
       if (yesSize > 3.2) {
-        message.textContent = "Es wird eng für Nein.";
+        message.textContent = "Es wird eng für Nein, Amy.";
       }
 
       if (yesSize > 4.3) {
@@ -179,7 +187,7 @@
       }
 
       if (noTries === 6) {
-        message.textContent = "System empfiehlt eindeutig: Ja.";
+        message.textContent = "System empfiehlt für Amy eindeutig: Ja.";
       }
 
       if (noTries === 10) {
@@ -218,7 +226,7 @@
     yesBtn.addEventListener("click", function () {
       clearInterval(growthInterval);
 
-      message.textContent = "Richtige Entscheidung :)";
+      message.textContent = "Richtige Entscheidung, Amy :)";
       yesBtn.textContent = "Sehr gut";
       noBtn.style.display = "none";
 
